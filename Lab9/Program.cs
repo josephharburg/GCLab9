@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace Lab8
+using System.Text.RegularExpressions;
+
+namespace Lab9
 {
     class Program
     {
@@ -8,12 +10,12 @@ namespace Lab8
         {
             List<string> students = new List<string>()
              {
-                "Joseph H",
-                "Margaret K",
-                "John H",
-                "Barb S",
-                "Tom H",
-                "Mike H"
+                "Joseph Harburg",
+                "Margaret Kelly",
+                "John Hambelly",
+                "Barb Swift",
+                "Tom Kershmit",
+                "Mike Hamlet"
                 };
             List<string> homeTown = new List<string>()
                 {
@@ -51,26 +53,39 @@ namespace Lab8
                 "Yellow",
                 "Orange"
             };
-
-            Console.WriteLine("Welcome to the Main Menu!");
-            bool repeatMain = true, repeatOne = true;
-            while(repeatMain)
+            bool repeatMain = true;
+            while (repeatMain)
             {
+                bool repeatOne = true, repeatTwo = true; ;
+                Console.WriteLine("\nWelcome to the Main Menu!");
+                for (int index = 0; index < students.Count; index++)
+                {
+                    Console.WriteLine($"{index + 1}: {students[index]}");
+                }
+
                 string userInput = Console.ReadLine();
                 int studentNumber = Validator(userInput);
 
                 string studentSelected = students[studentNumber];
+
                 while (repeatOne)
                 {
-                    GetInfo(studentNumber,studentSelected, homeTown, job, major, color);
-                    repeatOne = Repeator(studentSelected);
+                    GetInfo(studentNumber, studentSelected, homeTown, job, major, color);
+                    repeatOne = Repeator($"more about {studentSelected}");
                 }
-                while(repeatMain)
+                while (repeatTwo)
                 {
-                    repeatMain = Repeator("another student");
+                    repeatTwo = Repeator("add another student");
+                    if (repeatTwo)
+                    {
+                        AddStudent(students, homeTown, job, major, color);
+                    }
                 }
-            }
 
+                repeatMain = Repeator("select another student");
+                
+            }
+            return;
         }
         public static int Validator(string userInput)
         {
@@ -80,7 +95,7 @@ namespace Lab8
             {
                 try
                 {
-                    studentNum = int.Parse(userInput);
+                    studentNum = int.Parse(userInput) - 1;
                     repeat = false;
                 }
                 catch (FormatException)
@@ -98,11 +113,35 @@ namespace Lab8
                     Console.WriteLine("That was not a valid response try again");
                     repeat = true;
                 }
-                
+
             }
             return studentNum;
         }
+        public static string Validator()
+        {
+            bool repeat = true;
+            string input = "";
+            Regex validate = new Regex(@"[A-Z]|[a-z]{1,30}");
+            while (repeat)
+            {
+                input = Console.ReadLine();
+                if (validate.IsMatch(input))
+                {
+                    repeat = false;
+                    return input;
+                }
+                else if (input == String.Empty)
+                {
+                    Console.WriteLine("Im sorry thats not a valid input try again.");
+                }
+                else
+                {
+                    Console.WriteLine("Im sorry thats not a valid input try again.");
+                }
 
+            }
+            return input;
+        }
         public static void GetInfo(int studentNum, string name, List<string> homeTown, List<string> job, List<string> major, List<string> color)
         {
             bool repeat = true;
@@ -115,12 +154,12 @@ namespace Lab8
                     Console.WriteLine($"{name}'s hometown is {homeTown[studentNum]}");
                     repeat = false;
                 }
-                else if(whatInfo == "job")
+                else if (whatInfo == "job")
                 {
                     Console.WriteLine($"{name}'s job is {job[studentNum]}");
                     repeat = false;
                 }
-                else if (whatInfo == "major" )
+                else if (whatInfo == "major")
                 {
                     Console.WriteLine($"{name}'s major  is {major[studentNum]}");
                     repeat = false;
@@ -130,7 +169,7 @@ namespace Lab8
                     Console.WriteLine($"{name}'s favorite color is {color[studentNum]}");
                     repeat = false;
                 }
-                else 
+                else
                 {
                     Console.WriteLine("That is not a valid selection.");
                     repeat = true;
@@ -145,7 +184,7 @@ namespace Lab8
 
             while (repeat)
             {
-                Console.WriteLine($"Would you like to learn more about {input}?");
+                Console.WriteLine($"Would you like to {input}?");
                 string yorn = Console.ReadLine().ToLower();
                 if (yorn == "y" || yorn == "yes")
                 {
@@ -158,18 +197,49 @@ namespace Lab8
                 }
                 else
                 {
-                    Console.WriteLine("Im sorry thats not a valid input. please");
+                    Console.WriteLine("Im sorry thats not a valid input.");
                     repeat = true;
                 }
             }
             return true;
 
         }
-         
-        public static void AddStudent()
+
+        public static void AddStudent(List<string> students, List<string> homeTown, List<string> job, List<string> major, List<string> color)
         {
-           
-            
+            bool addYorn = true;
+            //addYorn = Repeator("add another student");
+            while (addYorn)
+            {
+                Console.WriteLine("Enter the students name:");
+                string name = Validator();
+                students.Add(name);
+                Console.WriteLine($"{name}'s name has been added to the database!");
+                Console.WriteLine($"\nEnter {name}'s Hometown:");
+
+                string hometown = Validator();
+                homeTown.Add(hometown);
+                Console.WriteLine($"{hometown} has been added to {name}'s info.");
+                Console.WriteLine($"\nEnter {name}'s job:");
+
+                string currentJob = Validator();
+                job.Add(currentJob);
+                Console.WriteLine($"{currentJob} has been added to {name}'s info.");
+                Console.WriteLine($"\nEnter {name}'s major:");
+
+                string study = Validator();
+                major.Add(study);
+                Console.WriteLine($"{study} has been added to {name}'s info.");
+                Console.WriteLine($"\nEnter {name}'s favorite color:");
+
+                string favColor = Validator();
+                color.Add(favColor);
+                Console.WriteLine($"{favColor} has been added to {name}'s info.");
+
+                Console.WriteLine($"\n{name}'s info and name has been added to the database");
+                addYorn = false;
+            }
+
         }
     }
 }
