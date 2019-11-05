@@ -85,6 +85,7 @@ namespace Lab9
                 repeatMain = Repeator("select another student");
                 
             }
+            Console.WriteLine("GoodBye!");
             return;
         }
         public static int Validator(string userInput)
@@ -121,7 +122,7 @@ namespace Lab9
         {
             bool repeat = true;
             string input = "";
-            Regex validate = new Regex(@"[A-Z]|[a-z]{1,30}");
+            Regex validate = new Regex(@"^([A-Z]*[a-z],* *)+$");
             while (repeat)
             {
                 input = Console.ReadLine();
