@@ -10,46 +10,46 @@ namespace Lab9
         {
             List<string> students = new List<string>()
              {
-                "Joseph Harburg",
-                "Margaret Kelly",
-                "John Hambelly",
                 "Barb Swift",
+                "Joseph Harburg",
+                "John Hasbelly",
+                "Margaret Kelly",
+                "Mike Hamlet",
                 "Tom Kershmit",
-                "Mike Hamlet"
                 };
             List<string> homeTown = new List<string>()
                 {
-                "Ann Arbor, Michigan",
-                "Milford, New Jersey",
-                "New York, New York",
                 "Bloomfield Hills, Michigan",
+                "Ann Arbor, Michigan",
+                "New York, New York",
+                "Milford, New Jersey",
                 "Eugene, Oregon",
                 "Olympia, Washington"
                 };
             List<string> job = new List<string>()
                 {
-                "Service Sales Rep",
-                "Baker",
-                "Psychologist",
                 "Teacher",
+                "Service Sales Rep",
+                "Psychologist",
+                "Baker",
                 "Doctor",
                 "Therapist"
                 };
             List<string> major = new List<string>()
             {
-                "C#/.net",
-                "Culinary Arts",
-                "Psycology",
                 "Education",
+                "C#/.net",
+                "Psycology",
+                "Culinary Arts",
                 "Eastern Medicine",
                 "Social Work"
             };
             List<string> color = new List<string>()
             {
-                "White",
-                "Green",
-                "Blue",
                 "Red",
+                "White",
+                "Blue",
+                "Green",
                 "Yellow",
                 "Orange"
             };
@@ -58,13 +58,14 @@ namespace Lab9
             {
                 bool repeatOne = true, repeatTwo = true; ;
                 Console.WriteLine("\nWelcome to the Main Menu!");
+
                 for (int index = 0; index < students.Count; index++)
                 {
                     Console.WriteLine($"{index + 1}: {students[index]}");
                 }
 
-                string userInput = Console.ReadLine();
-                int studentNumber = Validator(userInput);
+                Console.WriteLine("Please select a student by typing a number!");
+                int studentNumber = Validator(students);
 
                 string studentSelected = students[studentNumber];
 
@@ -88,7 +89,7 @@ namespace Lab9
             Console.WriteLine("GoodBye!");
             return;
         }
-        public static int Validator(string userInput)
+        public static int Validator(List<string> userInput)
         {
             bool repeat = true;
             int studentNum = 0;
@@ -96,18 +97,24 @@ namespace Lab9
             {
                 try
                 {
-                    studentNum = int.Parse(userInput) - 1;
+                    string input = Console.ReadLine();
+                    studentNum = int.Parse(input) - 1;
+                    string testIndexRange = userInput[studentNum];
                     repeat = false;
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Im sorry thats not a number!");
+                    Console.WriteLine($"Im sorry thats not a number between 1-{userInput.Count}!");
                     repeat = true;
                 }
                 catch (OverflowException)
                 {
-                    Console.WriteLine("That wasnt a number between 1-6");
+                    Console.WriteLine($"Im sorry thats not a number between 1-{userInput.Count}!");
                     repeat = true;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine($"Im sorry thats not a number between 1-{userInput.Count}!");
                 }
                 catch (Exception)
                 {
@@ -148,7 +155,7 @@ namespace Lab9
             bool repeat = true;
             while (repeat)
             {
-                Console.WriteLine($"What would you like to know about {name}?\n\t You can choose: Hometown, Job, Major, Color.");
+                Console.WriteLine($"What would you like to know about {name}?\nYou can choose: Hometown, Job, Major, Color.");
                 string whatInfo = Console.ReadLine().ToLower();
                 if (whatInfo == "hometown")
                 {
@@ -162,7 +169,7 @@ namespace Lab9
                 }
                 else if (whatInfo == "major")
                 {
-                    Console.WriteLine($"{name}'s major  is {major[studentNum]}");
+                    Console.WriteLine($"{name}'s major is {major[studentNum]}");
                     repeat = false;
                 }
                 else if (whatInfo == "color")
@@ -172,7 +179,7 @@ namespace Lab9
                 }
                 else
                 {
-                    Console.WriteLine("That is not a valid selection.");
+                    Console.WriteLine("That is not a valid selection.\n");
                     repeat = true;
                 }
             }
@@ -215,29 +222,31 @@ namespace Lab9
                 Console.WriteLine("Enter the students name:");
                 string name = Validator();
                 students.Add(name);
+                students.Sort();
+                int insertHere = students.IndexOf(name);
                 Console.WriteLine($"{name}'s name has been added to the database!");
                 Console.WriteLine($"\nEnter {name}'s Hometown:");
 
                 string hometown = Validator();
-                homeTown.Add(hometown);
+                homeTown.Insert(insertHere,hometown);
                 Console.WriteLine($"{hometown} has been added to {name}'s info.");
                 Console.WriteLine($"\nEnter {name}'s job:");
 
                 string currentJob = Validator();
-                job.Add(currentJob);
+                job.Insert(insertHere,currentJob);
                 Console.WriteLine($"{currentJob} has been added to {name}'s info.");
                 Console.WriteLine($"\nEnter {name}'s major:");
 
                 string study = Validator();
-                major.Add(study);
+                major.Insert(insertHere, study);
                 Console.WriteLine($"{study} has been added to {name}'s info.");
                 Console.WriteLine($"\nEnter {name}'s favorite color:");
 
                 string favColor = Validator();
-                color.Add(favColor);
+                color.Insert(insertHere, favColor);
                 Console.WriteLine($"{favColor} has been added to {name}'s info.");
 
-                Console.WriteLine($"\n{name}'s info and name has been added to the database");
+                Console.WriteLine($"\n{name}'s info and name has been added to the database.\n");
                 addYorn = false;
             }
 
